@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "kestreltestpy"
+version = "0.1.0"
+description = ""
+authors = ["dek <dek@substructure.one>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+supabase = "^0.5.8"
+PyJWT = "^2.4.0"
+requests = "^2.28.1"
+python-dotenv = "^0.20.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.1.2"
+ipython = "^8.4.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
