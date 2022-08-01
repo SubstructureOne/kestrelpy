@@ -70,3 +70,16 @@ def test_listkeys():
         print(keys)
     finally:
         client.signout()
+
+
+def test_externaldeposit():
+    myemail = os.getenv("KESTREL_USER")
+    mypass = os.getenv("KESTREL_PASSWORD")
+    supabase_url = os.getenv("SUPABASE_URL")
+    supabase_anon_key = os.getenv("SUPABASE_ANON_KEY")
+    client = KestrelClient(supabase_url, supabase_anon_key, LOCAL_KESTREL_URL)
+    client.signin(myemail, mypass)
+    try:
+        client.externaldeposit(100.)
+    finally:
+        client.signout()

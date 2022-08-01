@@ -40,10 +40,15 @@ class KestrelClient:
     def setauth(self, jwt):
         self._session = self._client.auth.set_auth(jwt)
 
-    def jwt(self):
+    def jwt(self) -> str:
         if self._session is None:
             raise ValueError("Not signed in")
         return self._session.access_token
+
+    def userid(self) -> str:
+        if self._session is None:
+            raise ValueError("Not signed in")
+        return str(self._session.user.id)
 
     def addkey(self, newkey: bytes, keytype: str):
         response = requests.post(
@@ -86,6 +91,18 @@ class KestrelClient:
                 'message_b64': base64.b64encode(message).decode('utf-8'),
                 'signature_b64': base64.b64encode(signature).decode('utf-8'),
                 'key_b64': base64.b64encode(key).decode('utf-8')
+            }
+        )
+        if response.status_code != 200:
+            raise KestrelApiError(response.json())
+
+    def externaldeposit(self, amount: float):
+        response = requests.post(
+            self._createurl('deposit'),
+            json={
+                'jwt': self.jwt(),
+                'userid': self.userid(),
+                'amount': amount
             }
         )
         if response.status_code != 200:
