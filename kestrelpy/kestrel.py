@@ -108,5 +108,22 @@ class KestrelClient:
         if response.status_code != 200:
             raise KestrelApiError(response.json())
 
+    def queryuserdata(self, userid: str, appid: str, column: str, operator: str, value: str):
+        response = requests.post(
+            self._createurl('queryuserdata'),
+            json={
+                'jwt': self.jwt(),
+                'userid': userid,
+                'appid': appid,
+                'column': column,
+                'operator': operator,
+                'value': value,
+            }
+        )
+        if response.status_code != 200:
+            raise KestrelApiError(response.json())
+        import ipdb; ipdb.set_trace()
+        return response.json()
+
     def _createurl(self, service: str):
         return f'{self._kestrel_url}/{service}'
