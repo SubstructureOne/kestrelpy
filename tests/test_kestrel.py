@@ -96,3 +96,24 @@ def test_queryuserdata():
         client.queryuserdata(client.userid(), "abcd", "data->>def", "eq", "123")
     finally:
         client.signout()
+
+
+def test_fileupload():
+    client = _createclient()
+    _signin(client)
+    try:
+        client.uploadfile(client.userid(), 'abcd', '/home/david/Downloads/greeting.wasm')
+    finally:
+        client.signout()
+
+
+def _createclient():
+    supabase_url = os.getenv("SUPABASE_URL")
+    supabase_anon_key = os.getenv("SUPABASE_ANON_KEY")
+    return KestrelClient(supabase_url, supabase_anon_key, LOCAL_KESTREL_URL)
+
+
+def _signin(client: KestrelClient):
+    myemail = os.getenv("KESTREL_USER")
+    mypass = os.getenv("KESTREL_PASSWORD")
+    client.signin(myemail, mypass)

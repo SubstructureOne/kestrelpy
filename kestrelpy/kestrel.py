@@ -122,7 +122,24 @@ class KestrelClient:
         )
         if response.status_code != 200:
             raise KestrelApiError(response.json())
-        import ipdb; ipdb.set_trace()
+        return response.json()
+
+    def uploadfile(self, userid: str, appid: str, filepath: str):
+        with open(filepath, 'rb') as fp:
+            filedata = fp.read()
+        filedata_b64 = base64.b64encode(filedata).decode('utf-8')
+        response = requests.post(
+            self._createurl('uploadfile'),
+            json={
+                'jwt': self.jwt(),
+                'userid': userid,
+                'appid': appid,
+                'path': 'testpath',
+                'filedata_b64': filedata_b64,
+            }
+        )
+        if response.status_code != 200:
+            raise KestrelApiError(response.json())
         return response.json()
 
     def _createurl(self, service: str):
